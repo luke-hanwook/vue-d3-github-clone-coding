@@ -1,10 +1,26 @@
 # test-project
 
+### Description
+
+[Live Demo](https://p3xk51pp90.codesandbox.io/)
+
+Insight of Github Contributor Clone coding
+
+![Demo Image](./githubclone.gif?raw=true)
+
+### Using Tech Stack
+
+- Vue.js (vuex, axios)
+- d3.js
+- SVG
+- Javascript
+- Github Statistics Api (RESTful API)
+
 > A Vue.js project
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
 
