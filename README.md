@@ -4,7 +4,7 @@
 
 [Live Demo](https://codesandbox.io/s/github/luke-hanwook/vue-d3-github-clone-coding)
 
-Insight of Github Contributor Clone coding
+Insight of Github Contributor Clone coding ((related Document in kor)[https://github.com/luke-hanwook/TIL/blob/master/FrontEnd/Vue.js/Vue.js%EB%A1%9C%20github%20contributor%20%ED%81%B4%EB%A1%A0%20%EC%BD%94%EB%94%A9%20%ED%95%98%EA%B8%B0.md])
 
 ![Demo Image](./githubclone.gif?raw=true)
 
