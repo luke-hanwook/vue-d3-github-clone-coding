@@ -1,35 +1,55 @@
 <template>
   <section>
-    <div class="form-group">
-      <form @submit.prevent="fetchApiData" class="form">
-        <div><input type="text" v-model="owner" placeholder="owner" /></div>
-        <div>
-          <input type="text" v-model="repo" placeholder="repository name" />
-        </div>
-        <button>search</button>
-      </form>
-    </div>
-    <D3Graph />
+    <InputForm />
+    <D3Graph>
+      <AreaGraphWrapper :width="width" :height="height" :graph-style="style" />
+    </D3Graph>
+    <D3Graph>
+      <LineGraphWrapper :width="width" :height="height" :graph-style="style" />
+    </D3Graph>
+    <D3Graph>
+      <RectGraphWrapper :width="width" :height="height" :graph-style="style" />
+    </D3Graph>
   </section>
 </template>
 
 <script>
 import D3Graph from "./D3Graph.vue";
-import { mapActions } from "vuex";
+import { mapState } from "vuex";
+import AreaGraphWrapper from "./AreaGraphWrapper.vue";
+import LineGraphWrapper from "./LineGraphWrapper.vue";
+import RectGraphWrapper from "./RectGraphWrapper.vue";
+import InputForm from "./InputForm.vue";
+
 export default {
   name: "HelloWorld",
-  components: { D3Graph },
+  components: {
+    D3Graph,
+    AreaGraphWrapper,
+    LineGraphWrapper,
+    RectGraphWrapper,
+    InputForm
+  },
   data() {
     return {
-      msg: "Welcome to Your Vue.js App",
-      owner: "",
-      repo: ""
+      msg: "Welcome to Your Vue.js App"
     };
   },
-  methods: {
-    ...mapActions(["FETCH_DATA"]),
-    fetchApiData() {
-      this.FETCH_DATA({ owner: this.owner.trim(), repo: this.repo.trim() });
+  computed: {
+    ...mapState({
+      area: "area"
+    }),
+    width() {
+      return this.area.width + this.area.margin;
+    },
+    height() {
+      return this.area.height + this.area.margin;
+    },
+    style() {
+      const areaMargin = this.area.margin / 2;
+      return {
+        transform: `translate(${areaMargin}px, ${areaMargin}px)`
+      };
     }
   }
 };
@@ -51,16 +71,5 @@ li {
 }
 a {
   color: #42b983;
-}
-.form-group {
-  width: 740px;
-  margin: 10px;
-}
-.form {
-  display: flex;
-  justify-content: center;
-}
-input {
-  margin-right: 10px;
 }
 </style>
