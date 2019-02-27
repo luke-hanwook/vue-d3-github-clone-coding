@@ -5,6 +5,7 @@
       ref="overlay"
       :width="width"
       :height="height"
+      :cursor="overlayCursor"
       @mousedown="mousedown"
     ></rect>
     <rect
@@ -15,6 +16,7 @@
       y="0"
       :width="selectedWidth"
       :height="height"
+      :cursor="selectCursor"
       @mousedown="selectionMousedown"
     ></rect>
     <rect
@@ -26,6 +28,7 @@
       y="0"
       width="6"
       :height="height"
+      :cursor="handleCursor"
       @mousedown="handleRightMousedown"
     ></rect>
     <rect
@@ -37,6 +40,7 @@
       y="0"
       width="6"
       :height="height"
+      :cursor="handleCursor"
       @mousedown="handleLeftMousedown"
     ></rect>
   </g>
@@ -53,7 +57,10 @@ export default {
       selectedX: 20,
       selectedRightX: 0,
       selectedLeftX: 0,
-      selectedWidth: 0
+      selectedWidth: 0,
+      overlayCursor: "crosshair",
+      selectCursor: "move",
+      handleCursor: "ew-resize"
     };
   },
   computed: {
@@ -131,6 +138,7 @@ export default {
       const defaultX = e.offsetX - this.area.margin / 2;
       const addX = this.selectedX;
       w.on("mousemove", () => {
+        this.overlayCursor = "move";
         let x = d3.mouse(this.$refs.overlay)[0];
         let moveX = x <= 0 ? 0 : x > this.area.width ? this.area.width : x;
         if (defaultX < moveX) {
@@ -152,6 +160,7 @@ export default {
           this.getDataIndex(this.selectedLeftX),
           this.getDataIndex(this.selectedRightX)
         );
+        this.overlayCursor = "crosshair";
         w.on("mousemove", null).on("mouseup", null);
       });
       e.preventDefault();
@@ -161,7 +170,9 @@ export default {
       const handleType = e.target.dataset.handleType;
       const addWidth = this.selectedWidth;
       const rightX = this.selectedRightX;
-      w.on("mousemove", () => {
+      w.on("mousemove", _ => {
+        this.overlayCursor = "ew-resize";
+        this.selectCursor = "ew-resize";
         let x = d3.mouse(this.$refs.overlay)[0];
         let moveX = x <= 0 ? 0 : x > this.area.width ? this.area.width : x;
         const handleX = this[handleType];
@@ -184,6 +195,8 @@ export default {
           this.getDataIndex(this.selectedLeftX),
           this.getDataIndex(this.selectedRightX)
         );
+        this.overlayCursor = "crosshair";
+        this.selectCursor = "move";
         w.on("mousemove", null).on("mouseup", null);
       });
       e.preventDefault();
@@ -194,6 +207,8 @@ export default {
       const addWidth = this.selectedWidth;
       const leftX = this.selectedLeftX;
       w.on("mousemove", () => {
+        this.overlayCursor = "ew-resize";
+        this.selectCursor = "ew-resize";
         let x = d3.mouse(this.$refs.overlay)[0];
         let moveX = x <= 0 ? 0 : x > this.area.width ? this.area.width : x;
         const handleX = this[handleType];
@@ -215,6 +230,8 @@ export default {
           this.getDataIndex(this.selectedLeftX),
           this.getDataIndex(this.selectedRightX)
         );
+        this.overlayCursor = "crosshair";
+        this.selectCursor = "move";
         w.on("mousemove", null).on("mouseup", null);
       });
       e.preventDefault();
@@ -238,16 +255,6 @@ export default {
 </script>
 
 <style scoped>
-.overlay:hover {
-  cursor: crosshair;
-}
-.selection-rect:hover {
-  cursor: move;
-}
-.handle-left,
-.handle-right {
-  cursor: ew-resize;
-}
 .selection-rect {
   fill: #24292e;
   fill-opacity: 0.1;
